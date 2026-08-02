@@ -1,0 +1,5 @@
+work_type,n_jobs,median_days_to_ship,mean_days_to_ship
+Litho,4267,25.0,34.34169205530818
+Outwork,408,10.0,20.82843137254902
+Wide Format,137,7.0,8.97080291970803
+Digital,1318,6.0,9.19195751138088
