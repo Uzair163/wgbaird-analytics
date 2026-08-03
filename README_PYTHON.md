@@ -26,10 +26,10 @@ lands, not just for the one sample file used to build it.
 ## 2. Architecture
 
 ```
-data/input/*.xlsx  --(pipeline.py)-->  output/*.csv + output/charts/*.png  --(app.py)-->  live Streamlit dashboard
+data/input/*.xlsx  --(Pipeline.ipynb)-->  output/*.csv + output/charts/*.png  --(app.py)-->  live Streamlit dashboard
 ```
 
-- **pipeline.py** loads every `.xlsx` in `data/input/`, validates its columns against the
+- **Pipeline.ipynb** loads every `.xlsx` in `data/input/`, validates its columns against the
   "Field Definitions" tab of the workbook (a schema change fails loudly instead of
   silently producing wrong numbers), cleans known data-quality issues, and writes seven
   summary CSVs plus three chart PNGs.
@@ -43,7 +43,7 @@ data/input/*.xlsx  --(pipeline.py)-->  output/*.csv + output/charts/*.png  --(ap
 ## 3. Repository structure
 
 ```
-├── pipeline.py                         # load → clean → validate → summarise → write CSVs + charts
+├── Pipeline.ipynb                         # load → clean → validate → summarise → write CSVs + charts
 ├── app.py                              # Streamlit dashboard, 5 pages
 ├── requirements.txt
 ├── data/input/                         # drop new .xlsx exports here, same sheet structure
@@ -64,7 +64,7 @@ data/input/*.xlsx  --(pipeline.py)-->  output/*.csv + output/charts/*.png  --(ap
 **Locally:**
 ```
 pip install -r requirements.txt
-python pipeline.py          # place your .xlsx in data/input/ first
+python Pipeline.ipynb          # place your .xlsx in data/input/ first
 streamlit run app.py
 ```
 
@@ -82,10 +82,10 @@ without installing anything locally.
 
 ### Reproducing a refresh, online
 1. Open [colab.research.google.com](https://colab.research.google.com), new notebook.
-2. Upload `pipeline.py` and a new `.xlsx` into a `data/input/` folder in the Colab file
+2. Upload `Pipeline.ipynb` and a new `.xlsx` into a `data/input/` folder in the Colab file
    browser.
 3. `!pip install pandas openpyxl matplotlib -q`
-4. `!python pipeline.py`
+4. `!python Pipeline.ipynb`
 5. Download the refreshed `output/` folder, commit it to the repo, and the live
    Streamlit app picks up the new numbers on next load.
 
@@ -136,6 +136,6 @@ A natural next step involves shifting to a job-level fact table. Instead of expo
 
 The EUR-to-GBP conversion rate should move from a hardcoded static value to a live source, so cross-currency rankings stay aligned with reality rather than drifting over time.
 
-Refreshes can move from manual runs to a scheduled job. A simple option would be a GitHub Actions workflow that reruns pipeline.py on a timer or when new files land, keeping the dashboard current without someone pressing a button.
+Refreshes can move from manual runs to a scheduled job. A simple option would be a GitHub Actions workflow that reruns Pipeline.ipynb on a timer or when new files land, keeping the dashboard current without someone pressing a button.
 
 Finally, adding unit tests with pytest around the churn threshold and reorder-window logic would guard against silent regressions. Any future change to the pipeline would then have to pass those checks before it could reintroduce a calculation error.
